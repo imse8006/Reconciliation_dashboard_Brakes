@@ -1,0 +1,48 @@
+{
+  "total_skus": 26764,
+  "total_comparisons": 160584,
+  "match_count": 92726,
+  "mismatch_count": 47329,
+  "missing_stibo_count": 9424,
+  "missing_sap_count": 7450,
+  "both_missing_count": 3655,
+  "match_pct": 57.74298809345888,
+  "mismatch_pct": 29.473048373436956,
+  "mismatch_by_attribute": [
+    {
+      "attribute": "brand",
+      "mismatch_count": 26324,
+      "sku_count": 26324
+    },
+    {
+      "attribute": "packsize",
+      "mismatch_count": 9799,
+      "sku_count": 9799
+    },
+    {
+      "attribute": "product_name",
+      "mismatch_count": 4861,
+      "sku_count": 4861
+    },
+    {
+      "attribute": "barcode_inner",
+      "mismatch_count": 3429,
+      "sku_count": 3429
+    },
+    {
+      "attribute": "barcode_outer",
+      "mismatch_count": 2653,
+      "sku_count": 2653
+    },
+    {
+      "attribute": "split_case",
+      "mismatch_count": 263,
+      "sku_count": 263
+    }
+  ],
+  "market": "Brakes",
+  "total_stibo_rows": 31726,
+  "total_sap_rows": 26929,
+  "stibo_only_count": 4961,
+  "sap_only_count": 165
+}

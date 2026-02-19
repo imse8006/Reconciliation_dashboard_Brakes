@@ -1,0 +1,63 @@
+{
+  "join_key": {
+    "Brakes": {
+      "stibo": ["itm_nbr"],
+      "sap": ["Code"]
+    }
+  },
+  "attributes": {
+    "product_name": {
+      "Brakes": {
+        "stibo": ["item description"],
+        "sap": ["Description (Main SAP Description)"]
+      }
+    },
+    "packsize": {
+      "Brakes": {
+        "stibo": ["packsize"],
+        "sap": ["Size / Dimension"]
+      }
+    },
+    "split_case": {
+      "Brakes": {
+        "stibo": ["Split/Case"],
+        "sap": ["Sold As", "Sold As (Case or Split)", "Sold As\n(Case or Split)"]
+      }
+    },
+    "barcode_outer": {
+      "Brakes": {
+        "stibo": ["gtin outer"],
+        "sap": ["EAN 1"]
+      }
+    },
+    "barcode_inner": {
+      "Brakes": {
+        "stibo": ["gtin inner"],
+        "sap": ["EAN 2"]
+      }
+    },
+    "brand": {
+      "Brakes": {
+        "stibo": ["brand"],
+        "sap": ["Brand"]
+      }
+    },
+    "vendor": {
+      "Brakes": {
+        "stibo": ["default suvc number"],
+        "sap": ["Ult Ven Name"]
+      }
+    }
+  },
+  "context_columns": {
+    "Brakes": {
+      "stibo": {
+        "legally_package_split": ["legally packaged to be sold as split", "Legally Package to be sold as split?", "legally_package_split", "Legally Package Split"]
+      },
+      "sap": {
+        "discontinued": ["SAP MARA STATUS", "Discontinued? (SAP MARA)", "Discontinued", "discontinued", "MARA Status", "Material Status"],
+        "in_range": ["in range?", "In Range?", "In Range", "in_range", "Range", "Plant-Specific Material Status"]
+      }
+    }
+  }
+}
