@@ -657,11 +657,11 @@ def style_wide_table(df: pd.DataFrame) -> pd.DataFrame:
     """Apply conditional formatting to wide comparison table (MATCH / MISMATCH colors)."""
     def color_check(val):
         if val == 'MATCH':
-            return 'background-color: #B8E0D2'  # Vert doux
+            return 'background-color: #81C784; color: #1B5E20'  # Green 300 / dark green text
         elif val == 'MISMATCH':
-            return 'background-color: #E8C4C4'  # Rouge doux
+            return 'background-color: #E57373; color: #B71C1C'  # Red 300 / dark red text
         elif val in ['MISSING STIBO', 'MISSING SAP', 'BOTH MISSING']:
-            return 'background-color: #F5D7A0'  # Ambre / orange doux
+            return 'background-color: #FFB74D; color: #E65100'  # Orange 300 / dark orange text
         return ''
     
     # Find all "Check" columns

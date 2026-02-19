@@ -391,14 +391,24 @@ def load_and_prepare_data(
         df_current_range = normalize_column_names(df_current_range)
     
     # Enrichir SAP avec Brand depuis Elist : EList prime si match, sinon on garde la Brand SAP
+    # Normalisation des clés pour matcher (string, strip, 14335.0 -> 14335) car Excel peut donner int/float
+    def _normalize_join_key(col: str) -> pl.Expr:
+        return (
+            pl.col(col).cast(pl.Utf8).str.strip_chars()
+            .str.replace_all(r"\.0$", "")
+            .alias(col)
+        )
     if df_elist is not None and join_key_sap in df_sap.columns:
         elist_key_col = "Brakes Code" if "Brakes Code" in df_elist.columns else (join_key_sap if join_key_sap in df_elist.columns else None)
         if elist_key_col is not None and "Brand" in df_elist.columns:
+            # Elist: Brakes Code peut être int/float en Excel -> string normalisée
             df_elist_brand = df_elist.select([
-                pl.col(elist_key_col).cast(pl.Utf8).alias(join_key_sap),
+                pl.col(elist_key_col).cast(pl.Utf8).str.strip_chars()
+                .str.replace_all(r"\.0$", "")
+                .alias(join_key_sap),
                 pl.col("Brand").alias("Brand_elist")
             ]).unique(subset=[join_key_sap], keep="first")
-            df_sap = df_sap.with_columns(pl.col(join_key_sap).cast(pl.Utf8).alias(join_key_sap))
+            df_sap = df_sap.with_columns(_normalize_join_key(join_key_sap))
             df_sap = df_sap.join(df_elist_brand, on=join_key_sap, how="left")
             # Brand = EList si présente, sinon garder la valeur SAP
             if "Brand" in df_sap.columns:
