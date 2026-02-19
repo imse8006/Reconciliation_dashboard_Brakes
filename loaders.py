@@ -390,19 +390,24 @@ def load_and_prepare_data(
     if df_current_range is not None:
         df_current_range = normalize_column_names(df_current_range)
     
-    # Enrichir SAP avec Brand depuis Elist AVANT nettoyage/renommage (clé SAP = clé Elist, types alignés)
+    # Enrichir SAP avec Brand depuis Elist : EList prime si match, sinon on garde la Brand SAP
     if df_elist is not None and join_key_sap in df_sap.columns:
         elist_key_col = "Brakes Code" if "Brakes Code" in df_elist.columns else (join_key_sap if join_key_sap in df_elist.columns else None)
         if elist_key_col is not None and "Brand" in df_elist.columns:
             df_elist_brand = df_elist.select([
                 pl.col(elist_key_col).cast(pl.Utf8).alias(join_key_sap),
-                pl.col("Brand")
+                pl.col("Brand").alias("Brand_elist")
             ]).unique(subset=[join_key_sap], keep="first")
-            if "Brand" in df_sap.columns:
-                df_sap = df_sap.drop("Brand")
             df_sap = df_sap.with_columns(pl.col(join_key_sap).cast(pl.Utf8).alias(join_key_sap))
             df_sap = df_sap.join(df_elist_brand, on=join_key_sap, how="left")
-            logger.info("SAP Brand enriched from Elist (join before key rename)")
+            # Brand = EList si présente, sinon garder la valeur SAP
+            if "Brand" in df_sap.columns:
+                df_sap = df_sap.with_columns(
+                    pl.coalesce(pl.col("Brand_elist"), pl.col("Brand")).alias("Brand")
+                ).drop("Brand_elist")
+            else:
+                df_sap = df_sap.with_columns(pl.col("Brand_elist").alias("Brand")).drop("Brand_elist")
+            logger.info("SAP Brand: EList when match, else keep SAP value")
     
     # Nettoyage
     df_stibo = clean_dataframe(df_stibo, join_key_stibo)
